@@ -12,33 +12,44 @@ class Manager extends Component
     public $editingId = null;
 
     protected function rules()
-    {
-        return [
-            'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'in:expense,income'],
-        ];
-    }
+{
+    return [
+        'name' => [
+            'required',
+            'string',
+            'max:255',
+            \Illuminate\Validation\Rule::unique('categories')
+                ->where(fn ($query) => $query->where('user_id', auth()->id()))
+                ->ignore($this->editingId),
+        ],
+        'type' => ['required', 'in:expense,income'],
+    ];
+}
 
     public function save()
-    {
-        $this->validate();
+{
+    $this->validate();
 
-        Category::updateOrCreate(
-            [
-                'id' => $this->editingId,
-                'user_id' => auth()->id(),
-            ],
-            [
-                'user_id' => auth()->id(),
-                'name' => $this->name,
-                'type' => $this->type,
-            ]
-        );
+    if ($this->editingId) {
+        $category = Category::where('user_id', auth()->id())
+            ->findOrFail($this->editingId);
 
-        $this->resetForm();
-
-        $this->dispatch('category-saved');
+        $category->update([
+            'name' => $this->name,
+            'type' => $this->type,
+        ]);
+    } else {
+        Category::create([
+            'user_id' => auth()->id(),
+            'name' => $this->name,
+            'type' => $this->type,
+        ]);
     }
+
+    $this->resetForm();
+
+    $this->dispatch('category-saved');
+}
 
     public function edit($id)
     {
