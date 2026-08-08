@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\BudgetLimit;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -13,10 +14,12 @@ class BudgetLimits extends Component
 
     public function save()
     {
-        $this->validate([
-            'categoryId' => 'required',
-            'amount' => 'required|numeric|min:0',
-        ]);
+       $this->validate([
+    'categoryId' => 'required',
+    'amount' => 'required|numeric|min:0',
+], [], [
+    'categoryId' => 'category',
+]);
 
         BudgetLimit::create([
             'user_id' => Auth::id(),
@@ -28,8 +31,10 @@ class BudgetLimits extends Component
         session()->flash('message', 'Budget limit saved.');
     }
 
-   public function render()
+public function render()
 {
-    return view('livewire.budget-limits')->layout('layouts.app');
+    return view('livewire.budget-limits', [
+        'categories' => Category::where('user_id', Auth::id())->get(),
+    ])->layout('layouts.app');
 }
 }

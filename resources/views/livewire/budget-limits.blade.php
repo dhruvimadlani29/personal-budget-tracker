@@ -11,10 +11,10 @@
         <div>
             <label class="block text-sm font-medium text-[#6B6A61] mb-1">Category</label>
             <select wire:model="categoryId" class="w-full border border-[#D3CDBB] rounded-md px-3 py-2">
-                <option value="">Select a category</option>
-                <option value="1">Groceries (placeholder)</option>
-                <option value="2">Rent (placeholder)</option>
-                <option value="3">Entertainment (placeholder)</option>
+               <option value="">Select a category</option>
+@foreach ($categories as $category)
+    <option value="{{ $category->id }}">{{ $category->name }}</option>
+@endforeach
             </select>
             @error('categoryId') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
