@@ -20,5 +20,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'antoine@test.com',
             'password' => bcrypt('password'),
         ]);
+
+        // Seed categories AFTER users exist (categories.user_id points at users.id).
+        // When Amal adds a TransactionSeeder, it must be called AFTER this line,
+        // because transactions reference category_id.
+        $this->call([
+            CategorySeeder::class,
+        ]);
     }
 }
