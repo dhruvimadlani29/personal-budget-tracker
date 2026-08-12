@@ -102,11 +102,11 @@ new class extends Component
 
 <div>
     {{-- ============ ADD / EDIT FORM ============ --}}
-    <div class="bg-white shadow sm:rounded-lg p-6">
-        <h2 class="text-lg font-medium text-gray-900">
+    <div class="bg-white border border-[#E4E0D3] rounded-lg p-6">
+        <h2 class="text-lg font-medium text-[#1C1D18]">
             {{ $editingId ? __('Edit category') : __('Add a category') }}
         </h2>
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-[#6B6A61]">
             {{ __('Categories group your transactions as either income or expense.') }}
         </p>
 
@@ -124,7 +124,7 @@ new class extends Component
                 <div>
                     <x-input-label for="type" :value="__('Type')" />
                     <select wire:model="type" id="type" name="type"
-                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            class="mt-1 block w-full border-[#D3CDBB] focus:border-[#17231F] focus:ring-[#17231F] rounded-md shadow-sm">
                         <option value="expense">{{ __('Expense') }}</option>
                         <option value="income">{{ __('Income') }}</option>
                     </select>
@@ -151,44 +151,44 @@ new class extends Component
     </div>
 
     {{-- ============ LISTING ============ --}}
-    <div class="bg-white shadow sm:rounded-lg mt-6 overflow-hidden">
-        <div class="p-6 border-b border-gray-100">
-            <h2 class="text-lg font-medium text-gray-900">{{ __('Your categories') }}</h2>
+    <div class="bg-white border border-[#E4E0D3] rounded-lg mt-6 overflow-hidden">
+        <div class="p-6 border-b border-[#E4E0D3]">
+            <h2 class="text-lg font-medium text-[#1C1D18]">{{ __('Your categories') }}</h2>
         </div>
 
         @if ($this->categories->isEmpty())
-            <div class="p-6 text-sm text-gray-500">
+            <div class="p-6 text-sm text-[#6B6A61]">
                 {{ __('No categories yet. Add your first one above.') }}
             </div>
         @else
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-[#E4E0D3]">
+                <thead class="bg-[#F6F3EA]">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Name') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Type') }}</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-[#6B6A61] uppercase tracking-wider">{{ __('Name') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-[#6B6A61] uppercase tracking-wider">{{ __('Type') }}</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-[#6B6A61] uppercase tracking-wider">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-[#E4E0D3]">
                     @foreach ($this->categories as $category)
                         <tr wire:key="category-{{ $category->id }}">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#1C1D18]">
                                 {{ $category->name }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($category->type === 'income')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#E7F0EA] text-[#2A5540]">
                                         {{ __('Income') }}
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F4E7E2] text-[#79311F]">
                                         {{ __('Expense') }}
                                     </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button wire:click="edit({{ $category->id }})"
-                                        class="text-indigo-600 hover:text-indigo-900">
+                                        class="text-[#2C4A63] hover:underline">
                                     {{ __('Edit') }}
                                 </button>
                                 <button wire:click="delete({{ $category->id }})"
