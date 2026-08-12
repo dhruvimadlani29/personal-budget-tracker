@@ -46,6 +46,10 @@ new class extends Component
                             {{ __('Categories') }}
                         </x-nav-link>
                     @endif
+
+                    <x-nav-link :href="route('budget-limits')" :active="request()->routeIs('budget-limits')" wire:navigate class="!text-gray-300">
+                        {{ __('Budget Limits') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -109,6 +113,10 @@ new class extends Component
                     {{ __('Categories') }}
                 </x-responsive-nav-link>
             @endif
+
+            <x-responsive-nav-link :href="route('budget-limits')" :active="request()->routeIs('budget-limits')" wire:navigate class="!text-gray-300">
+                {{ __('Budget Limits') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
