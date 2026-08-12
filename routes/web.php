@@ -20,7 +20,7 @@ Route::get('/profile', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/transactions', TransactionsIndex::class)->name('transactions.index');
     Route::get('/transactions/create', TransactionsCreate::class)->name('transactions.create');
-    Route::get('/transactions/{transaction}/edit', TransactionsEdit::class)->name('transactions.edit');
+    Route::get('/transactions/{id}/edit', TransactionsEdit::class)->name('transactions.edit');
 });
 // Categories page. The name MUST be "categories.index" so the nav bar link
 // (which checks Route::has('categories.index')) appears automatically.

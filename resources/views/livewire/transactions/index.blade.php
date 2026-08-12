@@ -6,11 +6,23 @@
     @endif
 
     <div class="mb-4 flex justify-between items-center">
-        <select wire:model.live="filterType" class="border rounded p-2">
-            <option value="">All Types</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-        </select>
+        <div class="flex gap-2">
+            <select wire:model.live="filterType" class="border rounded p-2">
+                <option value="">All Types</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+
+            <select wire:model.live="filterCategory" class="border rounded p-2">
+                <option value="">All Categories</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+
+            <input type="date" wire:model.live="filterDateFrom" class="border rounded p-2">
+            <input type="date" wire:model.live="filterDateTo" class="border rounded p-2">
+        </div>
 
         <a href="{{ route('transactions.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">
             + Add Transaction

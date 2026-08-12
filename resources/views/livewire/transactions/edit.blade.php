@@ -1,57 +1,45 @@
-<?php
+<div>
+    <h1 class="text-xl font-bold mb-4">Edit Transaction</h1>
 
-namespace App\Livewire\Transactions;
+    <form wire:submit="update">
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Amount</label>
+            <input type="number" step="0.01" wire:model="amount" class="border rounded w-full p-2">
+            @error('amount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
 
-use Livewire\Component;
-use App\Models\Transaction;
-use App\Models\Category;
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Type</label>
+            <select wire:model="type" class="border rounded w-full p-2">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            </select>
+            @error('type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
 
-class Edit extends Component
-{
-    public Transaction $transaction;
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Date</label>
+            <input type="date" wire:model="date" class="border rounded w-full p-2">
+            @error('date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
 
-    public $amount;
-    public $type;
-    public $date;
-    public $description;
-    public $category_id;
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Category</label>
+            <select wire:model="category_id" class="border rounded w-full p-2">
+                <option value="">Select a category</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            @error('category_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
 
-    public function mount(Transaction $transaction)
-    {
-        // make sure users can only edit their own transactions
-        if ($transaction->user_id !== auth()->id()) {
-            abort(403);
-        }
+        <div class="mb-4">
+            <label class="block font-semibold mb-1">Description</label>
+            <input type="text" wire:model="description" class="border rounded w-full p-2">
+            @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
 
-        $this->transaction = $transaction;
-        $this->amount = $transaction->amount;
-        $this->type = $transaction->type;
-        $this->date = $transaction->date;
-        $this->description = $transaction->description;
-        $this->category_id = $transaction->category_id;
-    }
-
-    public function update()
-    {
-        $validated = $this->validate([
-            'amount' => 'required|numeric|min:0.01',
-            'type' => 'required|in:income,expense',
-            'date' => 'required|date',
-            'description' => 'nullable|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-        ]);
-
-        $this->transaction->update($validated);
-
-        session()->flash('message', 'Transaction updated successfully.');
-
-        return redirect()->route('transactions.index');
-    }
-
-    public function render()
-    {
-        return view('livewire.transactions.edit', [
-            'categories' => Category::where('user_id', auth()->id())->get(),
-        ]);
-    }
-}
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save Changes</button>
+    </form>
+</div>
