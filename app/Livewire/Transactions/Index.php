@@ -14,6 +14,24 @@ class Index extends Component
     public $filterCategory = '';
     public $filterDateFrom = '';
     public $filterDateTo = '';
+    public $dateFilterError = '';
+
+    public function updated($property)
+    {
+        if (in_array($property, ['filterDateFrom', 'filterDateTo'])) {
+            $this->validateDateRange();
+        }
+    }
+
+    protected function validateDateRange()
+    {
+        if ($this->filterDateFrom && $this->filterDateTo
+            && $this->filterDateFrom > $this->filterDateTo) {
+            $this->dateFilterError = 'The "from" date must be before the "to" date.';
+        } else {
+            $this->dateFilterError = '';
+        }
+    }
 
     public function sortBy($field)
     {
@@ -35,6 +53,8 @@ class Index extends Component
 
     public function render()
     {
+        $this->validateDateRange();
+
         $transactions = Transaction::where('user_id', auth()->id())
             ->when($this->filterType, function ($query) {
                 $query->where('type', $this->filterType);
@@ -42,10 +62,10 @@ class Index extends Component
             ->when($this->filterCategory, function ($query) {
                 $query->where('category_id', $this->filterCategory);
             })
-            ->when($this->filterDateFrom, function ($query) {
+            ->when($this->filterDateFrom && !$this->dateFilterError, function ($query) {
                 $query->whereDate('date', '>=', $this->filterDateFrom);
             })
-            ->when($this->filterDateTo, function ($query) {
+            ->when($this->filterDateTo && !$this->dateFilterError, function ($query) {
                 $query->whereDate('date', '<=', $this->filterDateTo);
             })
             ->orderBy($this->sortBy, $this->sortDirection)
@@ -57,6 +77,6 @@ class Index extends Component
         return view('livewire.transactions.index', [
             'transactions' => $transactions,
             'categories' => $categories,
-        ])->layout('.layouts.app');
+        ])->layout('layouts.app');
     }
 }

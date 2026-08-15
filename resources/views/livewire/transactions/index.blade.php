@@ -39,6 +39,10 @@
 
                         <input type="date" wire:model.live="filterDateFrom" class="border border-[#D3CDBB] rounded-md px-3 py-2 text-sm text-[#1C1D18] focus:border-[#17231F] focus:ring-[#17231F]">
                         <input type="date" wire:model.live="filterDateTo" class="border border-[#D3CDBB] rounded-md px-3 py-2 text-sm text-[#1C1D18] focus:border-[#17231F] focus:ring-[#17231F]">
+
+                        @if ($dateFilterError)
+                            <p class="w-full text-sm text-[#B3261E] mt-1">{{ $dateFilterError }}</p>
+                        @endif
                     </div>
 
 
